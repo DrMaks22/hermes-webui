@@ -67,10 +67,10 @@ def test_boot_js_served(cleanup_test_sessions):
 def test_app_js_no_longer_referenced_in_html(cleanup_test_sessions):
     """index.html must not reference the old monolithic app.js."""
     html = get_text("/")
-    assert 'src="static/app.js"' not in html
+    assert 'src="/static/app.js"' not in html and 'src="static/app.js"' not in html
     # All 6 modules must be present
     for module in ["ui.js", "workspace.js", "sessions.js", "messages.js", "panels.js", "boot.js"]:
-        assert f'src="static/{module}"' in html, f"Missing {module} in index.html"
+        assert f'src="static/{module}"' in html, f"Missing {module} in index.html  (expected relative path since PR #588)"
 
 def test_module_load_order_correct(cleanup_test_sessions):
     """ui.js must appear before sessions.js which must appear before boot.js."""
